@@ -1,0 +1,1 @@
+This is a text doc we can use to play with Git.
