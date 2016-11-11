@@ -11,6 +11,16 @@ $(function(){
         });
         $("#campusSelect").html(optionsString);
     });
+     $.get("https://owlrepair-148215.appspot.com/api/category/getAll",function(data,status){
+        var categories = data.CATEGORIES;
+        console.log(categories);
+        var optionsString = "<option hidden >Select Category</option>";
+        $.each(categories,function(key,value){
+            optionsString += "<option value='"+value.CATEGORY_ID+"'>"+value.CATEGORY_DESC+"</option>";
+        });
+        $("#categorySelect").html(optionsString);
+    });
+    
 });
 
 $("#campusSelect").change(function(){
