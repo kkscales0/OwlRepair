@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var session = require("client-sessions");
 var bodyParser = require("body-parser");
+var path = require("path");
 app.use(session({
     cookieName: 'OwlRepair',
     secret: 'jakdoweidkafjn',
@@ -18,7 +19,7 @@ app.use(express.static('public_node'));
 
 
 app.get('/', function(req, res){
-    res.redirect('/login');
+    res.sendFile(path.join(__dirname + '/login.html'));
 })
 
 app.post('/loginfunc', function(req, res){
@@ -56,5 +57,5 @@ var server = app.listen(14555, function() {
     var host = server.address().address
     var port = server.address().port
     
-    console.log("Example app listening at http://%s:$s", host, port)
+    console.log("Example app listening at http://%s:$s", host, port);
 })
