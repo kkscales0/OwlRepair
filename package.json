@@ -4,6 +4,7 @@
     "version":"0.0.1",
     "dependencies": {
         "express": "4.14.0",
+        "multer":"1.2.0",
         "ldapjs": "1.0.1",
         "body-parser": "1.15.2",
         "client-sessions": "0.7.0"

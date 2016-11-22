@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var multer = require("multer");
 var session = require("client-sessions");
 var bodyParser = require("body-parser");
 var path = require("path");
@@ -9,18 +10,34 @@ app.use(session({
     duration: 30 * 60 * 1000,
     activeDuration: 3 * 60 * 1000,
     ephemeral: true
-}))
+}));
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 
 app.use(express.static('public_node'));
 
+app.use(express.static(__dirname + '/'));
+
+var storage =   multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './uploads');
+  },
+  filename: function (req, file, callback) {
+       console.log(file);
+    callback(null, ""+ Date.now());
+  }
+});
+var upload = multer({ storage : storage}).single('imageUpload');
 
 
 app.get('/', function(req, res){
-    res.sendFile(path.join(__dirname + '/login.html'));
-})
+    res.redirect("/login");
+});
+
+app.get('/login',function(req,res){
+     res.sendFile(path.join(__dirname + '/login.html'));
+});
 
 app.post('/loginfunc', function(req, res){
     var ldap = require('ldapjs');
@@ -51,7 +68,19 @@ app.post('/loginfunc', function(req, res){
                 res.redirect('/hw1');
             }
     })
-})
+});
+
+app.get('/submission',function(req,res){
+     res.sendFile(path.join(__dirname + '/submission.html'));
+});
+app.post('/api/submission',function(req,res){
+    upload(req,res,function(err) {
+        if(err) {
+            return res.end("Error uploading file.");
+        }
+        res.end("File is uploaded");
+    });
+});
 
 var server = app.listen(14555, function() {
     var host = server.address().address

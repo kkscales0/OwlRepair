@@ -76,7 +76,7 @@
         </div>
         <!-- /.row -->
         <div class="row">
-        <form>
+        <form id="submissionForm" enctype="multipart/form-data" action="/api/submission" method="post">
             <div class="row">
             <div class = "form-group">
                 <label for="campusSelect" class="col-sm-2 control-label">Campus:</label>
@@ -144,7 +144,7 @@
             </div>
             </div>
             <div class="row" id="buttonRow">
-            <button id="submitButton"type="button" class="btn btn-success btn-lg">Submit</button>
+            <input id="submitButton"type="submit" class="btn btn-success btn-lg" value="Submit">
             <button id="backButton"type="button" class="btn btn-default btn-lg">Back</button>
             </div>
         </form>
@@ -177,7 +177,7 @@
     <script src="resources/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <script src="resources/js/imageUpload.js"></script>
     <script src="resources/js/getCampusBuilding.js"></script>
-     <script src="resources/js/submitRequest.js"></script>
+   <!--  <script src="resources/js/submitRequest.js"></script> -->
 </body>
 
 </html>
