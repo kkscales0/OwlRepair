@@ -4,6 +4,7 @@ var multer = require("multer");
 var session = require("client-sessions");
 var bodyParser = require("body-parser");
 var path = require("path");
+var https = require("https");
 app.use(session({
     cookieName: 'OwlRepair',
     secret: 'jakdoweidkafjn',
@@ -19,72 +20,119 @@ app.use(express.static('public_node'));
 
 app.use(express.static(__dirname + '/'));
 
-var storage =   multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, './uploads');
-  },
-  filename: function (req, file, callback) {
-       console.log(file);
-    callback(null, ""+ Date.now());
-  }
+var storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, './uploads');
+    },
+    filename: function (req, file, callback) {
+        console.log(file);
+        callback(null, "" + Date.now());
+    }
 });
-var upload = multer({ storage : storage}).single('imageUpload');
+var upload = multer({
+    storage: storage
+});
 
 
-app.get('/', function(req, res){
+app.get('/', function (req, res) {
     res.redirect("/login");
 });
 
-app.get('/login',function(req,res){
-     res.sendFile(path.join(__dirname + '/login.html'));
+app.get('/login', function (req, res) {
+    res.sendFile(path.join(__dirname + '/login.html'));
 });
 
-app.post('/loginfunc', function(req, res){
+app.post('/loginfunc', function (req, res) {
     var ldap = require('ldapjs');
-    
+
     var url = "ldap://ad.fau.edu";
-    
+
     var ldapusername = req.body.username + "@fau.edu";
     var password = req.body.password;
-    
-    if(password === "")
-        {
-            res.send("No");
-            return;
+
+    if (password === "") {
+        res.send("No");
+        return;
+    }
+    var adClient = ldap.createClient({
+        url: url
+    });
+    adClient.bind(ldapusername, password, function (err) {
+        if (err != null) {
+            if (err.name === "InvalidCredentialsError") {
+                res.send("Sorry thats an incorrect login.");
+            }
+        } else {
+            req.OwlRepair.username = req.body.username;
+            delete password;
+            res.redirect('/hw1');
         }
-    var adClient = ldap.createClient({ url: url });
-    adClient.bind(ldapusername, password, function(err){
-        if (err != null)
-            {
-                if (err.name === "InvalidCredentialsError")
-                    {
-                        res.send("Sorry thats an incorrect login.");
-                    }
-            }
-        else
-            {
-                req.OwlRepair.username = req.body.username;
-                delete password;
-                res.redirect('/hw1');
-            }
     })
 });
 
-app.get('/submission',function(req,res){
-     res.sendFile(path.join(__dirname + '/submission.html'));
+app.get('/submission', function (req, res) {
+    res.sendFile(path.join(__dirname + '/submission.html'));
 });
-app.post('/api/submission',function(req,res){
-    upload(req,res,function(err) {
-        if(err) {
-            return res.end("Error uploading file.");
-        }
-        res.end("File is uploaded");
+app.post('/api/submission', upload.single('imageUpload'), function (req, res, next) {
+    console.log(req.body);
+    var campusid = parseInt(req.body.campusSelect);
+    var buildingid = parseInt(req.body.buildingSelect);
+    var locDesc = req.body.locDetail;
+    var catgoryid = parseInt(req.body.categorySelect);
+    var comments = req.body.comments;
+    var pubpriv = parseInt(req.body.visibilitySelect);
+    var imagepath = req.file.filename;
+    var postData = JSON.stringify({
+        'campusId': campusid,
+        'buildingId': buildingid,
+        'locationDesc': locDesc,
+        'categoryId': catgoryid,
+        'desc': comments,
+        'imagePath': imagepath,
+        'public': pubpriv
     });
+    console.log(postData);
+    console.log(req.OwlRepair);
+    var options = {
+        hostname: 'owlrepair-148215.appspot.com',
+        port: 443,
+        path: '/api/request/submit',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': req.OwlRepair,
+            'Content-Length': Buffer.byteLength(postData)
+        }
+    };
+
+    var APIreq = https.request(options, (res) => {
+        console.log(`STATUS: ${res.statusCode}`);
+        console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+        res.setEncoding('utf8');
+        res.on('data', (chunk) => {
+            console.log(`BODY: ${chunk}`);
+        });
+        res.on('end', () => {
+            console.log('No more data in response.');
+        });
+    });
+
+    APIreq.on('error', (e) => {
+        console.log(`problem with request: ${e.message}`);
+    });
+
+    // write data to request body
+    APIreq.write(postData);
+    APIreq.end();
+
+    
+    res.end("File is uploaded");
+
 });
 
-var server = app.listen(14555, function() {
+var server = app.listen(14555, function () {
     var host = server.address().address
     var port = server.address().port
-    
+
     console.log("Example app listening at http://%s:$s", host, port);
 })
