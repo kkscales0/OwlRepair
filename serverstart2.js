@@ -35,6 +35,7 @@ var upload = multer({
 
 
 app.get('/', function (req, res) {
+   // req.OwlRepair.username = "test";
     res.redirect("/login");
 });
 
@@ -92,6 +93,7 @@ app.post('/api/submission', upload.single('imageUpload'), function (req, res, ne
         'public': pubpriv
     });
     console.log(postData);
+    var owlCookie = "test";
     console.log(req.OwlRepair);
     var options = {
         hostname: 'owlrepair-148215.appspot.com',
@@ -100,7 +102,7 @@ app.post('/api/submission', upload.single('imageUpload'), function (req, res, ne
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Cookie': req.OwlRepair,
+            'Cookie': 'OwlRepair= '+owlCookie,
             'Content-Length': Buffer.byteLength(postData)
         }
     };
