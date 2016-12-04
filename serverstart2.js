@@ -33,38 +33,51 @@ var upload = multer({
     storage: storage
 });
 
-
 app.get('/', function(req, res){
-    req.OwlRepair.login = 0;
+    req.OwlRepair.login = false;
     res.sendFile(path.join(__dirname+'/html/login.html'));
    });
 
-app.post('/loginfunc', function (req, res) {
+app.get('/loginfail', function(req, res){
+    req.OwlRepair.login = false;
+    res.sendFile(path.join(__dirname+'/html/loginfail.html'));
+   });
+
+app.post('/loginfunc', function(req, res){
+    req.OwlRepair.login = false;
     var ldap = require('ldapjs');
-
+    
     var url = "ldap://ad.fau.edu";
-
+    
     var ldapusername = req.body.username + "@fau.edu";
     var password = req.body.password;
-
-    if (password === "") {
-        res.send("No");
-        return;
-    }
-    var adClient = ldap.createClient({
-        url: url
-    });
-    adClient.bind(ldapusername, password, function (err) {
-        if (err != null) {
-            if (err.name === "InvalidCredentialsError") {
-                res.send("Sorry thats an incorrect login.");
-            }
-        } else {
-            req.OwlRepair.username = req.body.username;
-            delete password;
-            res.redirect('/hw1');
+    
+    if(password === "")
+        {
+            res.redirect('/loginfail');
+            return;
         }
+    else{
+    var adClient = ldap.createClient({ url: url });
+    adClient.bind(ldapusername, password, function(err){
+        if (err != null)
+            {
+                if (err.name === "InvalidCredentialsError")
+                    {
+                        res.redirect('/loginfail');
+                    }
+            }
+        else
+            {
+                
+                req.OwlRepair.login = true;
+                req.OwlRepair.username = req.body.username;
+                delete password;
+                res.send(req.OwlRepair.username);
+        
+            }
     })
+    }
 });
 
 app.get('/submission', function (req, res) {
