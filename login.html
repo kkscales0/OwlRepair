@@ -6,13 +6,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>OwlRepair Login</title>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
     <body>
+        <div class="jumbotron">
+        <img class="img-responsive center-block" src="OwlRepair.png" alt="owl-repair-logo" width="25%" height="10%">
         <form method="post" action="/loginfunc">
-            <input type="text" name="username">
-            <input type="password" name="password">
-            <input type="submit">        
+            <div class="form-group">
+                <label for="netid">FAU NetId:</label>
+                <input type="text" name="username" id="netid" placeholder="Enter FAU NetId">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Password:</label>
+                <input type="password" name="password" id="pwd" placeholder="Enter FAU Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>        
         </form>
+        </div>
     
     
     </body>
