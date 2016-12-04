@@ -44,7 +44,7 @@ app.get('/loginfail', function(req, res){
    });
 
 app.post('/loginfunc', function(req, res){
-    req.OwlRepair.login = false;
+    if(req.OwlRepair.login == false){
     var ldap = require('ldapjs');
     
     var url = "ldap://ad.fau.edu";
@@ -57,6 +57,22 @@ app.post('/loginfunc', function(req, res){
             res.redirect('/loginfail');
             return;
         }
+    else if(req.body.username == "maintenance"){
+        if (req.body.password == "maintenance"){
+            res.send("Thanks for loggin in "+req.body.username+".  You'll be redirected sometime between now and the heat death of the universe.");
+        }
+        else{
+            res.redirect('/loginfail');
+        }
+    }
+    else if(req.body.username == "supervisor"){
+        if (req.body.password == "supervisor"){
+            res.send("Thanks for loggin in "+req.body.username+".  You'll be redirected sometime between now and the heat death of the universe.");
+        }
+        else{
+            res.redirect('/loginfail');
+        }
+    }
     else{
     var adClient = ldap.createClient({ url: url });
     adClient.bind(ldapusername, password, function(err){
@@ -71,12 +87,16 @@ app.post('/loginfunc', function(req, res){
             {
                 
                 req.OwlRepair.login = true;
+                req.OwlRepair.user = "student";
                 req.OwlRepair.username = req.body.username;
                 delete password;
-                res.send(req.OwlRepair.username);
+                res.send("Thanks for loggin in "+req.OwlRepair.username+".  You'll be redirected sometime between now and the heat death of the universe.");
         
             }
     })
+    }}
+    else{
+        res.redirect('/');
     }
 });
 
