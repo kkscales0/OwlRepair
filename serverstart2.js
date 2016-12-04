@@ -34,14 +34,10 @@ var upload = multer({
 });
 
 
-app.get('/', function (req, res) {
-   // req.OwlRepair.username = "test";
-    res.redirect("/login");
-});
-
-app.get('/login', function (req, res) {
-    res.sendFile(path.join(__dirname + '/login.html'));
-});
+app.get('/', function(req, res){
+    req.OwlRepair.login = 0;
+    res.sendFile(path.join(__dirname+'/html/login.html'));
+   });
 
 app.post('/loginfunc', function (req, res) {
     var ldap = require('ldapjs');
