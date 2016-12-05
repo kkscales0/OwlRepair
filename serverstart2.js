@@ -96,71 +96,92 @@ app.post('/loginfunc', function (req, res) {
         res.redirect('/');
     }
 });
+
+app.get('/logout', function (req, res) {
+    req.OwlRepair.reset();
+    res.redirect('/');
+});
 app.get('/publicRequests', function (req, res) {
-    res.sendFile(path.join(__dirname + '/html/publicRequests.html'));
+    if (req.OwlRepair.login) {
+        res.sendFile(path.join(__dirname + '/html/publicRequests.html'));
+    } else {
+        res.redirect('/logout');
+    }
 });
 app.get('/openRequests', function (req, res) {
-    res.sendFile(path.join(__dirname + '/html/openRequests.html'));
+    if (req.OwlRepair.login) {
+        res.sendFile(path.join(__dirname + '/html/openRequests.html'));
+    } else {
+        res.redirect('/logout');
+    }
 });
 
 app.get('/submission', function (req, res) {
-    res.sendFile(path.join(__dirname + '/html/submission.html'));
+    if (req.OwlRepair.login) {
+        res.sendFile(path.join(__dirname + '/html/submission.html'));
+    } else {
+        res.redirect('/logout');
+    }
 });
 app.post('/api/submission', upload.single('imageUpload'), function (req, res, next) {
-    console.log(req.body);
-    var campusid = parseInt(req.body.campusSelect);
-    var buildingid = parseInt(req.body.buildingSelect);
-    var locDesc = req.body.locDetail;
-    var catgoryid = parseInt(req.body.categorySelect);
-    var comments = req.body.comments;
-    var pubpriv = parseInt(req.body.visibilitySelect);
-    var imagepath = req.file.filename;
-    var postData = JSON.stringify({
-        'campusId': campusid,
-        'buildingId': buildingid,
-        'locationDesc': locDesc,
-        'categoryId': catgoryid,
-        'desc': comments,
-        'imagePath': imagepath,
-        'public': pubpriv
-    });
-    console.log(postData);
-    var owlCookie = "test";
-    console.log(req.OwlRepair);
-    var options = {
-        hostname: 'owlrepair-148215.appspot.com',
-        port: 443,
-        path: '/api/request/submit',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Cookie': 'OwlRepair= ' + owlCookie,
-            'Content-Length': Buffer.byteLength(postData)
-        }
-    };
-
-    var APIreq = https.request(options, (res) => {
-        console.log(`STATUS: ${res.statusCode}`);
-        console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-        res.setEncoding('utf8');
-        res.on('data', (chunk) => {
-            console.log(`BODY: ${chunk}`);
+    if (req.OwlRepair.login) {
+        console.log(req.body);
+        var campusid = parseInt(req.body.campusSelect);
+        var buildingid = parseInt(req.body.buildingSelect);
+        var locDesc = req.body.locDetail;
+        var catgoryid = parseInt(req.body.categorySelect);
+        var comments = req.body.comments;
+        var pubpriv = parseInt(req.body.visibilitySelect);
+        var imagepath = req.file.filename;
+        var postData = JSON.stringify({
+            'campusId': campusid,
+            'buildingId': buildingid,
+            'locationDesc': locDesc,
+            'categoryId': catgoryid,
+            'desc': comments,
+            'imagePath': imagepath,
+            'public': pubpriv
         });
-        res.on('end', () => {
-            console.log('No more data in response.');
+        console.log(postData);
+        var owlCookie = "test";
+        console.log(req.OwlRepair);
+        var options = {
+            hostname: 'owlrepair-148215.appspot.com',
+            port: 443,
+            path: '/api/request/submit',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': 'OwlRepair= ' + owlCookie,
+                'Content-Length': Buffer.byteLength(postData)
+            }
+        };
+
+        var APIreq = https.request(options, (res) => {
+            console.log(`STATUS: ${res.statusCode}`);
+            console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => {
+                console.log(`BODY: ${chunk}`);
+            });
+            res.on('end', () => {
+                console.log('No more data in response.');
+            });
         });
-    });
 
-    APIreq.on('error', (e) => {
-        console.log(`problem with request: ${e.message}`);
-    });
+        APIreq.on('error', (e) => {
+            console.log(`problem with request: ${e.message}`);
+        });
 
-    // write data to request body
-    APIreq.write(postData);
-    APIreq.end();
+        // write data to request body
+        APIreq.write(postData);
+        APIreq.end();
 
 
-    res.end("File is uploaded");
+        res.end("File is uploaded");
+    } else {
+        res.redirect('/logout');
+    }
 
 });
 

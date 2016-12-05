@@ -10,7 +10,7 @@
                           console.log(evt);
                           console.log(ui);
                           var row = $('.selector').igGridSelection("selectedRow");
-                          var currentHtml = row.context.activeElement.innerHTML(row.context.activeElement + "<div class='row'><p>memes</p></div>");
+
                       }
                                       }
                                       ]
