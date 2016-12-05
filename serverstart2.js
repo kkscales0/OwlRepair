@@ -35,45 +35,62 @@ var upload = multer({
 
 
 app.get('/', function (req, res) {
-    // req.OwlRepair.username = "test";
-    res.redirect("/login");
+    req.OwlRepair.login = false;
+    res.sendFile(path.join(__dirname + '/html/login.html'));
 });
 
-app.get('/login', function (req, res) {
-    res.sendFile(path.join(__dirname + '/login.html'));
+app.get('/loginfail', function (req, res) {
+    req.OwlRepair.login = false;
+    res.sendFile(path.join(__dirname + '/html/loginfail.html'));
 });
-app.get('/publicRequests', function (req, res) {
-    res.sendFile(path.join(__dirname + '/publicRequests.html'));
-});
-app.get('/openRequests', function (req, res) {
-    res.sendFile(path.join(__dirname + '/openRequests.html'));
-});
+
 app.post('/loginfunc', function (req, res) {
-    var ldap = require('ldapjs');
+    if (req.OwlRepair.login == false) {
+        var ldap = require('ldapjs');
 
-    var url = "ldap://ad.fau.edu";
+        var url = "ldap://ad.fau.edu";
 
-    var ldapusername = req.body.username + "@fau.edu";
-    var password = req.body.password;
+        var ldapusername = req.body.username + "@fau.edu";
+        var password = req.body.password;
 
-    if (password === "") {
-        res.send("No");
-        return;
-    }
-    var adClient = ldap.createClient({
-        url: url
-    });
-    adClient.bind(ldapusername, password, function (err) {
-        if (err != null) {
-            if (err.name === "InvalidCredentialsError") {
-                res.send("Sorry thats an incorrect login.");
+        if (password === "") {
+            res.redirect('/loginfail');
+            return;
+        } else if (req.body.username == "maintenance") {
+            if (req.body.password == "maintenance") {
+                res.send("Thanks for loggin in " + req.body.username + ".  You'll be redirected sometime between now and the heat death of the universe.");
+            } else {
+                res.redirect('/loginfail');
+            }
+        } else if (req.body.username == "supervisor") {
+            if (req.body.password == "supervisor") {
+                res.send("Thanks for loggin in " + req.body.username + ".  You'll be redirected sometime between now and the heat death of the universe.");
+            } else {
+                res.redirect('/loginfail');
             }
         } else {
-            req.OwlRepair.username = req.body.username;
-            delete password;
-            res.redirect('/hw1');
+            var adClient = ldap.createClient({
+                url: url
+            });
+            adClient.bind(ldapusername, password, function (err) {
+                if (err != null) {
+                    if (err.name === "InvalidCredentialsError") {
+                        res.redirect('/loginfail');
+                    }
+                } else {
+
+                    req.OwlRepair.login = true;
+                    req.OwlRepair.user = "student";
+                    req.OwlRepair.username = req.body.username;
+                    delete password;
+                    res.send("Thanks for loggin in " + req.OwlRepair.username + ".  You'll be redirected sometime between now and the heat death of the universe.");
+
+                }
+            })
         }
-    })
+    } else {
+        res.redirect('/');
+    }
 });
 
 app.get('/submission', function (req, res) {
