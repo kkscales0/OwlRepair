@@ -92,6 +92,12 @@ app.post('/loginfunc', function (req, res) {
         res.redirect('/');
     }
 });
+app.get('/publicRequests', function (req, res) {
+    res.sendFile(path.join(__dirname + '/publicRequests.html'));
+});
+app.get('/openRequests', function (req, res) {
+    res.sendFile(path.join(__dirname + '/openRequests.html'));
+});
 
 app.get('/submission', function (req, res) {
     res.sendFile(path.join(__dirname + '/submission.html'));
