@@ -35,14 +35,19 @@ var upload = multer({
 
 
 app.get('/', function (req, res) {
-   // req.OwlRepair.username = "test";
+    // req.OwlRepair.username = "test";
     res.redirect("/login");
 });
 
 app.get('/login', function (req, res) {
     res.sendFile(path.join(__dirname + '/login.html'));
 });
-
+app.get('/publicRequests', function (req, res) {
+    res.sendFile(path.join(__dirname + '/publicRequests.html'));
+});
+app.get('/openRequests', function (req, res) {
+    res.sendFile(path.join(__dirname + '/openRequests.html'));
+});
 app.post('/loginfunc', function (req, res) {
     var ldap = require('ldapjs');
 
@@ -102,7 +107,7 @@ app.post('/api/submission', upload.single('imageUpload'), function (req, res, ne
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Cookie': 'OwlRepair= '+owlCookie,
+            'Cookie': 'OwlRepair= ' + owlCookie,
             'Content-Length': Buffer.byteLength(postData)
         }
     };
@@ -127,7 +132,7 @@ app.post('/api/submission', upload.single('imageUpload'), function (req, res, ne
     APIreq.write(postData);
     APIreq.end();
 
-    
+
     res.end("File is uploaded");
 
 });

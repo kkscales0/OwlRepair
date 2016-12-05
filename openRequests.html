@@ -52,13 +52,10 @@
                         <a href=" ">Profile</a>
                     </li>
                     <li>
-                        <a href="submission">Submission</a>
+                        <a href=" ">Assigned Requests</a>
                     </li>
                     <li>
-                        <a href=" ">Private Requests</a>
-                    </li>
-                    <li>
-                        <a href="publicRequests">Public Requests</a>
+                        <a href="openRequests">Open Requests</a>
                     </li>
                 </ul>
             </div>
@@ -93,17 +90,9 @@
         </footer>
     </div>
 
-    <script>
-        $(function () {
-            $.getJSON('http://owlrepair-148215.appspot.com/api/request/getAllPublic', function (data) {
-                $("#grid").igGrid({
-                    dataSource: data.REQUESTS //JSON Array defined above                     
-                });
-            });
-
-
-        });
-    </script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="resources/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="resources/js/addAccordion.js"></script>
 
 </body>
 
