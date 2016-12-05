@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(express.static('public_node'));
+app.use(express.static('public_node'));
 
 app.use(express.static(__dirname + '/'));
 
@@ -58,13 +59,15 @@ app.post('/loginfunc', function (req, res) {
             return;
         } else if (req.body.username == "maintenance") {
             if (req.body.password == "maintenance") {
-                res.send("Thanks for loggin in " + req.body.username + ".  You'll be redirected sometime between now and the heat death of the universe.");
+                //res.send("Thanks for loggin in " + req.body.username + ".  You'll be redirected sometime between now and the heat death of the universe.");
+                res.redirect('/openRequests');
             } else {
                 res.redirect('/loginfail');
             }
         } else if (req.body.username == "supervisor") {
             if (req.body.password == "supervisor") {
-                res.send("Thanks for loggin in " + req.body.username + ".  You'll be redirected sometime between now and the heat death of the universe.");
+                // res.send("Thanks for loggin in " + req.body.username + ".  You'll be redirected sometime between now and the heat death of the universe.");
+                res.redirect('/openRequests');
             } else {
                 res.redirect('/loginfail');
             }
@@ -84,6 +87,7 @@ app.post('/loginfunc', function (req, res) {
                     req.OwlRepair.username = req.body.username;
                     delete password;
                     res.send("Thanks for loggin in " + req.OwlRepair.username + ".  You'll be redirected sometime between now and the heat death of the universe.");
+                    res.redirect('/publicRequests');
 
                 }
             })
@@ -93,14 +97,14 @@ app.post('/loginfunc', function (req, res) {
     }
 });
 app.get('/publicRequests', function (req, res) {
-    res.sendFile(path.join(__dirname + '/publicRequests.html'));
+    res.sendFile(path.join(__dirname + '/html/publicRequests.html'));
 });
 app.get('/openRequests', function (req, res) {
-    res.sendFile(path.join(__dirname + '/openRequests.html'));
+    res.sendFile(path.join(__dirname + '/html/openRequests.html'));
 });
 
 app.get('/submission', function (req, res) {
-    res.sendFile(path.join(__dirname + '/submission.html'));
+    res.sendFile(path.join(__dirname + '/html/submission.html'));
 });
 app.post('/api/submission', upload.single('imageUpload'), function (req, res, next) {
     console.log(req.body);
