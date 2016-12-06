@@ -60,6 +60,9 @@ app.post('/loginfunc', function (req, res) {
         } else if (req.body.username == "maintenance") {
             if (req.body.password == "maintenance") {
                 //res.send("Thanks for loggin in " + req.body.username + ".  You'll be redirected sometime between now and the heat death of the universe.");
+                req.OwlRepair.user = "maintenance";
+                req.OwlRepair.username = "maintenance";
+                req.OwlRepair.login = true;
                 res.redirect('/openRequests');
             } else {
                 res.redirect('/loginfail');
@@ -67,6 +70,9 @@ app.post('/loginfunc', function (req, res) {
         } else if (req.body.username == "supervisor") {
             if (req.body.password == "supervisor") {
                 // res.send("Thanks for loggin in " + req.body.username + ".  You'll be redirected sometime between now and the heat death of the universe.");
+                req.OwlRepair.user = "supervisor";
+                req.OwlRepair.username = "supervisor";
+                req.OwlRepair.login = true;
                 res.redirect('/openRequests');
             } else {
                 res.redirect('/loginfail');
@@ -179,6 +185,7 @@ app.post('/api/submission', upload.single('imageUpload'), function (req, res, ne
 
 
         res.end("File is uploaded");
+        res.redirect('/publicRequests');
     } else {
         res.redirect('/logout');
     }
