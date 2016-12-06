@@ -3,9 +3,9 @@
           state: "closed",
           modal: true,
           draggable: false,
-          resizable: false,
-          height: "350px",
-          width: "290px"
+          resizable: false
+              //height: "350px",
+              //width: "290px"
       });
       $.getJSON('http://owlrepair-148215.appspot.com/api/request/getAllUnassigned', function (data) {
           $("#grid").igGrid({
@@ -27,6 +27,17 @@
                       $("#currentCom").html("" + dataRow.DESC);
                       $("#currentStatus").html("" + dataRow.STATUS_DESC);
                       $('#currentImage').attr('src', '/uploads/' + dataRow.IMAGE_PATH);
+                      $.get("/api/maintUsers", function (data, status) {
+                          console.log(data);
+                          var thisData = JSON.parse(data);
+                          var users = thisData.MAINT_USERS;
+                          console.log(users);
+                          var optionsString = "<option hidden >Select  User</option>";
+                          $.each(users, function (key, value) {
+                              optionsString += "<option value='" + value.USER_ID + "'>" + value.USERNAME + "</option>";
+                          });
+                          $("#userSelect").html(optionsString);
+                      });
                       $("#dialog").igDialog("open");
 
                   }

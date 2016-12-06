@@ -121,6 +121,45 @@ app.get('/openRequests', function (req, res) {
         res.redirect('/logout');
     }
 });
+app.get('/api/maintUsers', function (req, result) {
+    if (req.OwlRepair.login) {
+        var owlCookie = req.OwlRepair.username;
+        var options = {
+            hostname: 'owlrepair-148215.appspot.com',
+            port: 443,
+            path: '/api/maintUsers/get',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': 'OwlRepair= ' + owlCookie
+            }
+        };
+
+        var APIreq = https.request(options, (res) => {
+            console.log(`STATUS: ${res.statusCode}`);
+            console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => {
+                console.log(`BODY: ${chunk}`);
+                result.setHeader('Content-Type', 'application/json');
+                result.send(JSON.stringify(chunk));
+            });
+            res.on('end', () => {
+                console.log('No more data in response.');
+            });
+        });
+
+        APIreq.on('error', (e) => {
+            console.log(`problem with request: ${e.message}`);
+        });
+
+        // write data to request body
+        APIreq.end();
+
+    } else {
+        result.redirect('/logout');
+    }
+});
 
 app.get('/submission', function (req, res) {
     if (req.OwlRepair.login) {
@@ -149,7 +188,7 @@ app.post('/api/submission', upload.single('imageUpload'), function (req, res, ne
             'public': pubpriv
         });
         console.log(postData);
-        var owlCookie = "test";
+        var owlCookie = req.OwlRepair.username;
         console.log(req.OwlRepair);
         var options = {
             hostname: 'owlrepair-148215.appspot.com',
