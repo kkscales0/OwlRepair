@@ -47,17 +47,21 @@
 
   });
 
-  function toggleCurrentRowOfGrid(grid) {
-      // get reference to current selected row
-      var row = $(grid).igGridSelection("selectedRow");
-      if (row) {
-          // toggle row
-          $("#grid").igHierarchicalGrid("toggle", row.element);
+  $("#assignButton").click(function () {
+      var selected = parseInt($("#userSelect").val());
+      console.log(selected);
+      if (selected > 0) {
+          var rows = $("#grid").igGridSelection("selectedRow");
+          var dataRow = $('#grid').data('igGrid').dataSource.dataView()[rows.index];
+          var reqId = dataRow.REQUEST_ID;
+          $.post("https://owlrepair-148215.appspot.com/api/request/updateMaintUser", {
+              requestId: reqId,
+              userId: selected
+          }, function (data, status) {
+              console.log(data);
+              if (data == "Success") {
+                  window.location.href = 'openRequests';
+              }
+          });
       }
-  }
-
-  function toggleCurrentRowOfRootGrid() {
-      // get the top level grid
-      var parentGrid = $("#grid").igHierarchicalGrid("root");
-      toggleCurrentRowOfGrid(parentGrid);
-  }
+  });
