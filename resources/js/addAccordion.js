@@ -26,7 +26,11 @@
                       $('#currentDesc').html("" + dataRow.LOC_DESC);
                       $("#currentCom").html("" + dataRow.DESC);
                       $("#currentStatus").html("" + dataRow.STATUS_DESC);
-                      $('#currentImage').attr('src', '/uploads/' + dataRow.IMAGE_PATH);
+                      if (dataRow.IMAGE_PATH == "") {
+                          $('#currentImage').attr('src', "");
+                      } else {
+                          $('#currentImage').attr('src', '/uploads/' + dataRow.IMAGE_PATH);
+                      }
                       $.get("/api/maintUsers", function (data, status) {
                           console.log(data);
                           var thisData = JSON.parse(data);

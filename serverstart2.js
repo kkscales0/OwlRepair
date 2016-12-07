@@ -17,7 +17,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(express.static('public_node'));
-app.use(express.static('public_node'));
 
 app.use(express.static(__dirname + '/'));
 
@@ -177,7 +176,12 @@ app.post('/api/submission', upload.single('imageUpload'), function (req, res, ne
         var catgoryid = parseInt(req.body.categorySelect);
         var comments = req.body.comments;
         var pubpriv = parseInt(req.body.visibilitySelect);
-        var imagepath = req.file.filename;
+        var imagepath;
+        if (req.file) {
+            imagepath = req.file.filename;
+        } else {
+            imagepath = "";
+        }
         var postData = JSON.stringify({
             'campusId': campusid,
             'buildingId': buildingid,
@@ -223,7 +227,6 @@ app.post('/api/submission', upload.single('imageUpload'), function (req, res, ne
         APIreq.end();
 
 
-        res.end("File is uploaded");
         res.redirect('/publicRequests');
     } else {
         res.redirect('/logout');
