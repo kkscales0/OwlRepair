@@ -120,6 +120,55 @@ app.get('/openRequests', function (req, res) {
         res.redirect('/logout');
     }
 });
+app.get('/assignedRequests', function (req, res) {
+    if (req.OwlRepair.login) {
+        res.sendFile(path.join(__dirname + '/html/assignedRequests.html'));
+    } else {
+        res.redirect('/logout');
+    }
+});
+app.get('/api/assigned', function (req, result) {
+    if (req.OwlRepair.login) {
+        var owlCookie = req.OwlRepair.username;
+        console.log(owlCookie);
+        var options = {
+            hostname: 'owlrepair-148215.appspot.com',
+            port: 443,
+            path: '/api/request/getAssignedForMaintUser',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': 'OwlRepair=' + owlCookie
+            }
+        };
+        result.setHeader('Content-Type', 'application/json');
+        var allData = "";
+        var APIreq = https.request(options, (res) => {
+            console.log(`STATUS: ${res.statusCode}`);
+            console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => {
+                console.log(`BODY: ${chunk}`);
+                allData += chunk;
+            });
+            res.on('end', () => {
+                console.log('No more data in response.');
+                result.send(allData);
+            });
+        });
+
+        APIreq.on('error', (e) => {
+            console.log(`problem with request: ${e.message}`);
+        });
+
+        // write data to request body
+
+        APIreq.end();
+
+    } else {
+        result.redirect('/logout');
+    }
+});
 app.get('/api/maintUsers', function (req, result) {
     if (req.OwlRepair.login) {
         var owlCookie = req.OwlRepair.username;
@@ -130,7 +179,7 @@ app.get('/api/maintUsers', function (req, result) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Cookie': 'OwlRepair= ' + owlCookie
+                'Cookie': 'OwlRepair=' + owlCookie
             }
         };
 
@@ -201,7 +250,7 @@ app.post('/api/submission', upload.single('imageUpload'), function (req, res, ne
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Cookie': 'OwlRepair= ' + owlCookie,
+                'Cookie': 'OwlRepair=' + owlCookie,
                 'Content-Length': Buffer.byteLength(postData)
             }
         };
