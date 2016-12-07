@@ -5,89 +5,135 @@
  */
 
 body {
-    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
-    background-color:  	 white;
+    padding-top: 70px;
+    /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    background-color: white;
     color: black;
 }
-p{
+
+p {
     text-align: center;
 }
+
+.text-left {
+    overflow-wrap: break-word;
+}
+
 .portfolio-item {
     margin-bottom: 25px;
 }
-.frontTable{
+
+.frontTable {
     text-align: right;
 }
-#buttonRow{
+
+#buttonRow {
     float: right;
     margin: 5px;
 }
-#backButton{
+
+#backButton {
     background-color: #CC0000;
     color: white;
 }
-#submitButton{
+
+#submitButton {
     background-color: #003366;
 }
-#submitButton:hover{
+
+#submitButton:hover {
     background-color: #016dda;
 }
-#backButton:hover{
+
+#backButton:hover {
     background-color: #ea0303;
     color: white;
 }
-hr
-{
+
+hr {
     border-top-color: #CC0000;
 }
-.h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, .h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small{
+
+.h1 .small,
+.h1 small,
+.h2 .small,
+.h2 small,
+.h3 .small,
+.h3 small,
+.h4 .small,
+.h4 small,
+.h5 .small,
+.h5 small,
+.h6 .small,
+.h6 small,
+h1 .small,
+h1 small,
+h2 .small,
+h2 small,
+h3 .small,
+h3 small,
+h4 .small,
+h4 small,
+h5 .small,
+h5 small,
+h6 .small,
+h6 small {
     color: #CCCCCC;
 }
-.navbar-inverse .navbar-brand{
+
+.navbar-inverse .navbar-brand {
     color: white;
 }
-.navbar-inverse .navbar-brand:hover{
-    color:gray;
+
+.navbar-inverse .navbar-brand:hover {
+    color: gray;
 }
-.navbar-inverse .navbar-nav>li>a{
-    color:white;
+
+.navbar-inverse .navbar-nav>li>a {
+    color: white;
 }
-.navbar-inverse .navbar-nav>li>a:hover{
-    color:gray;
+
+.navbar-inverse .navbar-nav>li>a:hover {
+    color: gray;
 }
-.navbar-inverse .navbar-toggle
-{
+
+.navbar-inverse .navbar-toggle {
     border-color: white;
 }
-.navbar-inverse,.navbar-inverse .navbar-toggle:focus, .navbar-inverse .navbar-toggle:hover {
+
+.navbar-inverse,
+.navbar-inverse .navbar-toggle:focus,
+.navbar-inverse .navbar-toggle:hover {
     background-color: #003366;
 }
-.page-header
-{
+
+.page-header {
     border-bottom-color: #CC0000;
 }
+
 footer {
     margin: 50px 0;
 }
 
-.list-group-item
-{
+.list-group-item {
     text-align: center;
     background-color: #222;
-    border-color:#eee;
-    text-decoration-color:#000;
+    border-color: #eee;
+    text-decoration-color: #000;
 }
-.form-group
-{
+
+.form-group {
     padding: 5px;
 }
-a.list-group-item
-{
-    color:#9d9d9d;
+
+a.list-group-item {
+    color: #9d9d9d;
 }
+
 a.list-group-item:hover,
-a.list-group-item:focus 
-{
-    color:#9d9d9d;
+a.list-group-item:focus {
+    color: #9d9d9d;
     background-color: #000;
-}s
+}
+
+s

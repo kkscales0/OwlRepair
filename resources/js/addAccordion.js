@@ -3,9 +3,9 @@
           state: "closed",
           modal: true,
           draggable: false,
-          resizable: false
-              //height: "350px",
-              //width: "290px"
+          resizable: false,
+          height: "350px",
+          width: "290px"
       });
       $.getJSON('http://owlrepair-148215.appspot.com/api/request/getAllUnassigned', function (data) {
           $("#grid").igGrid({
