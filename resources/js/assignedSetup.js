@@ -31,16 +31,14 @@
                       } else {
                           $('#currentImage').attr('src', '/uploads/' + dataRow.IMAGE_PATH);
                       }
-                      $.get("/api/maintUsers", function (data, status) {
-                          console.log(data);
-                          var thisData = JSON.parse(data);
-                          var users = thisData.MAINT_USERS;
+                      $.get("https://owlrepair-148215.appspot.com/api/status/getAll", function (data, status) {
+                          var users = data.STATUS;
                           console.log(users);
-                          var optionsString = "<option hidden >Select  User</option>";
+                          var optionsString = "<option hidden >Update Status</option>";
                           $.each(users, function (key, value) {
-                              optionsString += "<option value='" + value.USER_ID + "'>" + value.USERNAME + "</option>";
+                              optionsString += "<option value='" + value.STATUS_ID + "'>" + value.STATUS_DESC + "</option>";
                           });
-                          $("#userSelect").html(optionsString);
+                          $("#updateSelect").html(optionsString);
                       });
                       $("#dialog").igDialog("open");
 
@@ -51,20 +49,20 @@
 
   });
 
-  $("#assignButton").click(function () {
-      var selected = parseInt($("#userSelect").val());
+  $("#updateButton").click(function () {
+      var selected = parseInt($("#updateSelect").val());
       console.log(selected);
       if (selected > 0) {
           var rows = $("#grid").igGridSelection("selectedRow");
           var dataRow = $('#grid').data('igGrid').dataSource.dataView()[rows.index];
           var reqId = dataRow.REQUEST_ID;
-          $.post("https://owlrepair-148215.appspot.com/api/request/updateMaintUser", {
+          $.post("https://owlrepair-148215.appspot.com/api/request/updateStatus", {
               requestId: reqId,
-              userId: selected
+              statusId: selected
           }, function (data, status) {
               console.log(data);
               if (data == "Success") {
-                  window.location.href = 'openRequests';
+                  window.location.href = 'assignedRequests';
               }
           });
       }
