@@ -52,6 +52,41 @@ app.post('/loginfunc', function (req, res) {
 
         var ldapusername = req.body.username + "@fau.edu";
         var password = req.body.password;
+        
+        var sendhash = req.body.username;
+        console.log(sendhash);
+        
+        var sespostData = JSON.stringify({
+            'username': req.body.username
+        });
+        
+        var sesoptions = {
+            hostname: 'owlrepair-148215.appspot.com',
+            port: 443,
+            path: '/api/session/create',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': 'OwlRepair='+sendhash,
+                'Content-Length': Buffer.byteLength(sespostData)
+            }
+        };
+        
+        var APIreq = https.request(sesoptions, (res) => {
+            console.log(`STATUS: ${res.statusCode}`);
+            console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => {
+                console.log(`BODY: ${chunk}`);
+            });
+            res.on('end', () => {
+                console.log('No more data in response.');
+            });
+        });
+
+        APIreq.on('error', (e) => {
+            console.log(`problem with request: ${e.message}`);
+        });
 
         if (password === "") {
             res.redirect('/loginfail');
@@ -62,6 +97,11 @@ app.post('/loginfunc', function (req, res) {
                 req.OwlRepair.user = "maintenance";
                 req.OwlRepair.username = "maintenance";
                 req.OwlRepair.login = true;
+                
+                // write data to request body
+                APIreq.write(sespostData);
+                APIreq.end();
+                
                 res.redirect('/openRequests');
             } else {
                 res.redirect('/loginfail');
@@ -72,6 +112,11 @@ app.post('/loginfunc', function (req, res) {
                 req.OwlRepair.user = "supervisor";
                 req.OwlRepair.username = "supervisor";
                 req.OwlRepair.login = true;
+                
+                // write data to request body
+                APIreq.write(sespostData);
+                APIreq.end();
+                
                 res.redirect('/openRequests');
             } else {
                 res.redirect('/loginfail');
@@ -91,7 +136,12 @@ app.post('/loginfunc', function (req, res) {
                     req.OwlRepair.user = "student";
                     req.OwlRepair.username = req.body.username;
                     delete password;
-                    res.send("Thanks for loggin in " + req.OwlRepair.username + ".  You'll be redirected sometime between now and the heat death of the universe.");
+                    //res.send("Thanks for loggin in " + req.OwlRepair.username + ".  You'll be redirected sometime between now and the heat death of the universe.");
+                    
+                    // write data to request body
+                     APIreq.write(sespostData);
+                     APIreq.end();
+                    
                     res.redirect('/publicRequests');
 
                 }
