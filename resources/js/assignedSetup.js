@@ -2,10 +2,10 @@
       $("#dialog").igDialog({
           state: "closed",
           modal: true,
-          draggable: false,
-          resizable: false,
-          height: "350px",
-          width: "290px"
+          draggable: true,
+          resizable: true,
+          height: "75%",
+          width: "75%"
       });
       $.getJSON('/api/assigned', function (data) {
           $("#grid").igGrid({
