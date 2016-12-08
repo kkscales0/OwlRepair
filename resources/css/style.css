@@ -15,7 +15,16 @@ p {
     text-align: center;
 }
 
-.text-left {
+.slcusr {
+    width: 30%;
+}
+
+.cntrtwrld{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.text-center {
     overflow-wrap: break-word;
 }
 
