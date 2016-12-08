@@ -9,6 +9,60 @@
       });
       $.getJSON('https://owlrepair-148215.appspot.com/api/request/getAllUnassigned', function (data) {
           $("#grid").igGrid({
+              autoGenerateColums: false,
+              columns: [
+                  {
+                      headerText: "Request ID",
+                      key: "REQUEST_ID",
+                      datatype: "string",
+                      width: "8%",
+                      columnCssClass: "align-center"
+                  },
+                  {
+                      headerText: "Category",
+                      key: "CATEGORY_DESC",
+                      datatype: "string"
+                  },
+                  {
+                      headerText: "Building",
+                      key: "BUILDING_DESC",
+                      datatype: "string"
+                  },
+                  {
+                      headerText: "Priority",
+                      key: "PRIORITY_DESC",
+                      datatype: "string",
+                      width: "8%"
+                  },
+                  {
+                      headerText: "Campus",
+                      key: "CAMPUS_DESC",
+                      datatype: "string"
+                  },
+                  {
+                      headerText: "Status",
+                      key: "STATUS_DESC",
+                      datatype: "string",
+                      width: "8%"
+                  },
+                  {
+                      headerText: "Location",
+                      key: "LOC_DESC",
+                      datatype: "string",
+                      width: "10%"
+                  },
+                  {
+                      headerText: "Description",
+                      key: "DESC",
+                      datatype: "string",
+                      width: "10%"
+                  },
+                  {
+                      headerText: "Image",
+                      key: "IMAGE_PATH",
+                      datatype: "string",
+                  }
+                   ],
               dataSource: data.REQUESTS, //JSON Array defined above
               features: [{
                   name: 'Selection',

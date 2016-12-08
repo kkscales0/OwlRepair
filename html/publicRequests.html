@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <style>
-    .align-right {
-        text-align: right;
-    }
-    .align-center {
-        text-align: center;
-    }
-</style>
-        <title>OwlRepair</title>
+        .align-right {
+            text-align: right;
+        }
+        
+        .align-center {
+            text-align: center;
+        }
+    </style>
+    <title>OwlRepair</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="../resources/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="../resources/js/addAccordion.js"></script>
+    <link href="/resources/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-     <link href="../resources/css/style.css" rel="stylesheet">
+    <link href="/resources/css/style.css" rel="stylesheet">
 
     <!-- Ignite UI Required Combined CSS Files -->
     <link href="http://cdn-na.infragistics.com/igniteui/2016.2/latest/css/themes/infragistics/infragistics.theme.css" rel="stylesheet" />
@@ -31,16 +32,16 @@
     <script src="http://cdn-na.infragistics.com/igniteui/2016.2/latest/js/infragistics.lob.js"></script>
 
     <style>
-        #grid_container
-        {
+        #grid_container {
             width: 100%;
             max-width: 1160px;
         }
     </style>
 
 </head>
+
 <body>
- <!-- Navigation -->
+    <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -57,16 +58,16 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="submission.html">Submission</a>
+                        <a href="submission">Submission</a>
                     </li>
                     <li>
-                        <a href="privateRequests.html">Private Requests</a>
+                        <a href="privateRequests">Private Requests</a>
                     </li>
                     <li>
-                        <a href="publicRequests.html">Public Requests</a>
+                        <a href="publicRequests">Public Requests</a>
                     </li>
                     <li>
-                    <a href="logout.html">Logout</a>
+                        <a href="logout">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -87,8 +88,8 @@
             </div>
         </div>
 
-    <table id="grid"></table>
-        
+        <table id="grid"></table>
+
         <div id="dialog">
             <div class="row">
                 <p>Request ID: <span id="currentId"></span></p>
@@ -98,9 +99,6 @@
             </div>
             <div class="row">
                 <p>Building: <span id="currentBuilding"></span></p>
-            </div>
-            <div class="row">
-                <p>Priority: <span id="currentPriority"></span></p>
             </div>
             <div class="row">
                 <p>Campus: <span id="currentCampus"></span></p>
@@ -126,8 +124,8 @@
                 <img id="currentImage" src="/resources/img/upload.png" class="img-responsive text-center cntrtwrld">
             </div>
         </div>
-        
-         <!-- Footer -->
+
+        <!-- Footer -->
         <footer>
             <div class="row">
                 <div class="col-lg-12">
@@ -140,101 +138,93 @@
 
     <script>
         $(function () {
-                  $("#dialog").igDialog({
-                      state: "closed",
-                      modal: true,
-                      draggable: true,
-                      resizable: true,
-                      height: "75%",
-                      width: "75%"
-      });
-            $.getJSON('http://owlrepair-148215.appspot.com/api/request/getAllPublic', function(data) {
-               $("#grid").igGrid({
-                   autoGenerateColums: false, 
-                   columns: [
-                       {
-                           headerText: "Request ID",
-                           key:"REQUEST_ID",
-                           datatype: "string",
-                           width: "8%",
-                           columnCssClass: "align-center"
-                       },
-                       {
-                           headerText: "Category", 
-                           key: "CATEGORY_DESC",
-                           datatype: "string"
-                       },
+            $("#dialog").igDialog({
+                state: "closed",
+                modal: true,
+                draggable: true,
+                resizable: true,
+                height: "75%",
+                width: "75%"
+            });
+            $.getJSON('https://owlrepair-148215.appspot.com/api/request/getAllPublic', function (data) {
+                $("#grid").igGrid({
+                    autoGenerateColums: false,
+                    columns: [
                         {
-                           headerText: "Building", 
-                           key: "BUILDING_DESC",
-                           datatype: "string"
-                       }, 
-                       {
-                           headerText: "Campus", 
-                           key: "CAMPUS_DESC",
-                           datatype: "string"   
-                       },
-                                              {
-                           headerText: "Status", 
-                           key: "STATUS_DESC",
-                           datatype: "string",
-                           width: "8%"
-                       },
+                            headerText: "Request ID",
+                            key: "REQUEST_ID",
+                            datatype: "string",
+                            width: "8%",
+                            columnCssClass: "align-center"
+                        },
                         {
-                           headerText: "Description", 
-                           key: "DESC",
-                           datatype: "string",
-                            width: "30%"
-                       },
+                            headerText: "Category",
+                            key: "CATEGORY_DESC",
+                            datatype: "string"
+                        },
                         {
-                           headerText: "Image", 
-                           key: "IMAGE_PATH",
-                           datatype: "string",
-                       }
+                            headerText: "Building",
+                            key: "BUILDING_DESC",
+                            datatype: "string"
+                        },
+                        {
+                            headerText: "Campus",
+                            key: "CAMPUS_DESC",
+                            datatype: "string"
+                        },
+                        {
+                            headerText: "Status",
+                            key: "STATUS_DESC",
+                            datatype: "string",
+                            width: "8%"
+                        },
+                        {
+                            headerText: "Location",
+                            key: "LOC_DESC",
+                            datatype: "string",
+                            width: "10%"
+                        },
+                        {
+                            headerText: "Description",
+                            key: "DESC",
+                            datatype: "string",
+                            width: "10%"
+                        },
+                        {
+                            headerText: "Image",
+                            key: "IMAGE_PATH",
+                            datatype: "string",
+                        }
                    ],
                     dataSource: data.REQUESTS, //JSON Array defined above,
-                  features: [{
-                  name: 'Selection',
-                  mode: 'row',
-                  rowSelectionChanged: function (evt, ui) {
+                    features: [{
+                        name: 'Selection',
+                        mode: 'row',
+                        rowSelectionChanged: function (evt, ui) {
 
-                      var rows = $("#grid").igGridSelection("selectedRow");
-                      var dataRow = $('#grid').data('igGrid').dataSource.dataView()[rows.index];
-                      console.log(dataRow);
-                      $("#currentId").html("" + dataRow.REQUEST_ID);
-                      $("#currentCat").html("" + dataRow.CATEGORY_DESC);
-                      $("#currentBuilding").html("" + dataRow.BUILDING_DESC);
-                      $('#currentPriority').html("" + dataRow.PRIORITY_DESC);
-                      $('#currentCampus').html("" + dataRow.CAMPUS_DESC);
-                      $('#currentDesc').html("" + dataRow.LOC_DESC);
-                      $("#currentCom").html("" + dataRow.DESC);
-                      $("#currentStatus").html("" + dataRow.STATUS_DESC);
-                      if (dataRow.IMAGE_PATH == "") {
-                          $('#currentImage').attr('src', "");
-                      } else {
-                          $('#currentImage').attr('src', '../uploads/' + dataRow.IMAGE_PATH);
-                      }
-                      $.get("/api/maintUsers", function (data, status) {
-                          console.log(data);
-                          var thisData = JSON.parse(data);
-                          var users = thisData.MAINT_USERS;
-                          console.log(users);
-                          var optionsString = "<option hidden >Select  User</option>";
-                          $.each(users, function (key, value) {
-                              optionsString += "<option value='" + value.USER_ID + "'>" + value.USERNAME + "</option>";
-                          });
-                          $("#userSelect").html(optionsString);
-                      });
-                      $("#dialog").igDialog("open");
-
-                  }
-              }]
-                }); 
-            }); 
-
-
+                            var rows = $("#grid").igGridSelection("selectedRow");
+                            var dataRow = $('#grid').data('igGrid').dataSource.dataView()[rows.index];
+                            console.log(dataRow);
+                            $("#currentId").html("" + dataRow.REQUEST_ID);
+                            $("#currentCat").html("" + dataRow.CATEGORY_DESC);
+                            $("#currentBuilding").html("" + dataRow.BUILDING_DESC);
+                            $('#currentCampus').html("" + dataRow.CAMPUS_DESC);
+                            $('#currentDesc').html("" + dataRow.LOC_DESC);
+                            $("#currentCom").html("" + dataRow.DESC);
+                            $("#currentStatus").html("" + dataRow.STATUS_DESC);
+                            if (dataRow.IMAGE_PATH == "") {
+                                $('#currentImage').attr('src', "");
+                            } else {
+                                $('#currentImage').attr('src', '/uploads/' + dataRow.IMAGE_PATH);
+                            }
+                            $("#dialog").igDialog("open");
+                        }
+                    }]
+                });
+            });
         });
     </script>
 
 </body>
+
 </html>
