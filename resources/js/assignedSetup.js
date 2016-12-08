@@ -7,7 +7,7 @@
           height: "75%",
           width: "75%"
       });
-      $.getJSON('/api/assigned', function (data) {
+      $.get('/api/assigned', function (data) {
           $("#grid").igGrid({
               dataSource: data.USERS_REQUESTS, //JSON Array defined above
               features: [{

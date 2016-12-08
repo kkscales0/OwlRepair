@@ -7,7 +7,7 @@
           height: "75%",
           width: "75%"
       });
-      $.getJSON('http://owlrepair-148215.appspot.com/api/request/getAllUnassigned', function (data) {
+      $.getJSON('https://owlrepair-148215.appspot.com/api/request/getAllUnassigned', function (data) {
           $("#grid").igGrid({
               dataSource: data.REQUESTS, //JSON Array defined above
               features: [{
