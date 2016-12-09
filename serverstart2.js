@@ -259,6 +259,49 @@ app.get('/api/maintUsers', function (req, result) {
     }
 });
 
+app.get('/api/private', function (req, result) {
+    if (req.OwlRepair.login) {
+        var owlCookie = req.OwlRepair.username;
+        console.log(owlCookie);
+        var options = {
+            hostname: 'owlrepair-148215.appspot.com',
+            port: 443,
+            path: '/api/request/getAllByUser',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cookie': 'OwlRepair=' + owlCookie
+            }
+        };
+        result.setHeader('Content-Type', 'application/json');
+        var allData = "";
+        var APIreq = https.request(options, (res) => {
+            console.log(`STATUS: ${res.statusCode}`);
+            console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => {
+                console.log(`BODY: ${chunk}`);
+                allData += chunk;
+            });
+            res.on('end', () => {
+                console.log('No more data in response.');
+                result.send(allData);
+            });
+        });
+
+        APIreq.on('error', (e) => {
+            console.log(`problem with request: ${e.message}`);
+        });
+
+        // write data to request body
+
+        APIreq.end();
+
+    } else {
+        result.redirect('/logout');
+    }
+});
+
 app.get('/submission', function (req, res) {
     if (req.OwlRepair.login) {
         res.sendFile(path.join(__dirname + '/html/submission.html'));
