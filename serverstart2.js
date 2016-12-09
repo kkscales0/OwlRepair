@@ -259,6 +259,14 @@ app.get('/api/maintUsers', function (req, result) {
     }
 });
 
+app.get('/privateRequests', function (req, res) {
+    if (req.OwlRepair.login) {
+        res.sendFile(path.join(__dirname + '/html/privateRequests.html'));
+    } else {
+        res.redirect('/logout');
+    }
+}); 
+
 app.get('/api/private', function (req, result) {
     if (req.OwlRepair.login) {
         var owlCookie = req.OwlRepair.username;
